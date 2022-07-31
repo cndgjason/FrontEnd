@@ -1,0 +1,214 @@
+1.多态：
+重载（静态多态）：同一个类中，方法名相同但是参数不同
+重写（动态多态）：子类重写父类的一般方法
+隐藏（不是多态）：子类隐藏父类的一般属性，静态属性，静态方法
+隐藏：引用的声明类决定调用，而不是new的类
+
+动态绑定：运行时，通过动态创建对象的[方法表]定位方法
+        方法表：记录类及其所有超类的可见方法的直接地址
+
+静态绑定：在编译时定位方法：final,static,private和构造函数
+
+一般属性，一般方法，静态属性，静态方法都会被子类继承
+但是只有一般方法可以被重写，有多态性，其他三个都是继承或隐藏
+如果隐藏了，那么访问的就是子类中的属性
+隐藏的属性，只能在类中用super访问隐藏的属性或方法
+
+
+2.容器：
+ArrayList,LinkedList和Vector
+ArrayList基于数组，非线程安全，扩容2倍
+LinkedList基于链表，非线程安全
+Vector基于数据，非线程安全，扩容1.5倍
+
+HashMap,HashTable,ConcurrentHashMap(冲突解决和扩容机制)
+HashMap：非线程安全，大于8，红黑树，少于6，链表
+HashTable：线程安全
+ConcurrentHashMap：线程安全
+
+String,StringBuffer,StringBuilder
+String：常量，线程安全
+StringBuilder：变量，非线程安全
+StringBuffer：变量，线程安全
+
+3.==,equals和hashCode的区别
+  ==值或地址相同
+  equals函数重写
+  hashCode不同，equals一定不同（同时重写）
+
+4.创建对象的方式
+  1.new
+  2.clone（外面深拷贝，里面浅拷贝）
+  3.反序列化
+  4.反射
+
+5.异常类型
+  1.Error
+  2.受检异常
+  3.运行时异常
+
+6.范型：
+  类型刷除：编译后的字节码 (.class)文件中不包含泛型中的类型信息，使用泛型的时候加上的类型参数，会被编译器在编译的时候去掉
+
+7.注解：
+  注解类型：
+  1.Source:只有源码存在，源码提醒
+  2.Class:编译后存在class文件，源码生成
+  3.Runtime:运行时存在，反射使用
+
+8.反射:
+  在运行时，
+   1.获取类或者对象的属性和方法
+   2.调用类或者对象的属性和方法
+   3.构造任意一个类的对象
+
+9.内部类：
+  成员内部类
+  静态内部类
+  局部内部类
+  匿名内部类
+
+10.IO:
+   NIO：同步阻塞，CPU空闲
+   BIO：同步非阻塞，基于轮询，CPU不空闲
+   AIO：异步非阻塞，基于事件和回调机制，CPU不空闲
+
+11.线程和线程池：
+   线程状态：  
+   1.NEW（新建）：start前
+   2.RUNNABLE（可运行）：包括Ready（就绪）和Running（运行）的：start后
+   3.BLOCKED（阻塞）：synchronious
+   4.WAITING（等待）：join等
+   5.TIMED_WAITING（指定时间的等待）：sleep等
+   6.TERMINATED（终止）：结束
+
+   线程池类型：
+   1.newFixedThreadPool：核心线程数与最大线程数相同
+   2.newSingleThreadExecutor：一个线程的线程池
+   3.newCachedThreadPool:核心线程为0，最大线程数为Integer. MAX_VALUE
+   4.newScheduledThreadPool：指定核心线程数的定时线程池
+   5.newSingleThreadScheduledExecutor：单例的定时线程池
+
+   不推荐通过Executors直接创建线程池，调用ThreadPoolExecutor的构造函数自己创建线程池（堆积大量请求或者线程导致OOM）
+
+   ThreadLocal 原理：
+   ThreadLocal为变量在每个线程中创建了一个副本，该变量对其他线程隔离，这样每个线程都可以访问自己内部的副本变量。
+   ThreadLocal 实现线程关联的原理是与 Thread 类绑定, 将 数据存储 在对应 Thread 的上下文中。
+   数据隔离的实现：ThreadLocal类操作的是Thread的成员变量threadLocals。
+   每个线程Thread都有自己的threadLocals，从而互相不影响。
+   threadLocals这个成员变量的本质又是ThreadLocalMap类，它是ThreadLocal的内部类。
+
+   wait：无锁等待，CPU释放
+   notify：一个线程进入
+   notifyAll：全部线程进入
+   sleep：有锁等待，CPU释放
+   join：等待其他线程
+   yield：
+   interrupt：终止线程
+   
+   start：启动线程
+   run：实现接口方法
+
+   创建线程方式：
+   1.Thread
+   2.Runnable接口
+   3.Callable接口
+   4.线程池
+
+12.锁：
+   synchronized锁：
+   1.无锁
+   2.偏向锁
+   3.轻量级锁
+   重量级锁
+
+   ReentrantLock与Condition原理:
+   Conditon中的await()对应Object的wait()
+   Condition中的signal()对应Object的notify()
+   Condition中的signalAll()对应Object的notifyAll()
+
+   AQS:
+   Java技术之AQS详解 AQS是AbstractQueuedSynchronizer的简称。AQS提供了一种实现阻塞锁和一系列依赖FIFO等待队列的同步器的框架
+
+   CAS:
+   CAS有3个操作数，内存值V，旧的预期值A，要修改的新值B。当且仅当预期值A和内存值V相同时，将内存值V修改为B，否则什么都不做
+
+
+ 13.JVM内存模型：
+ 线程私有：Java栈，Native栈，程序计数器
+ 线程共享：堆，方法区（Java 8元空间不在虚拟机设置的内存中，而是使用本地内存）
+
+14.类加载：
+   类加载过程：
+   1.加载
+   2.链接：验证、准备、解析
+   3.初始化
+   4.使用
+   5.卸载
+
+  双亲委派:先委托父类进行加载，父类加载不到时，在向上委托，一直到引导类加载器都加载不到时，在由自己去进行加载。
+  热修复
+
+  1.Bootstrap
+  2.Extension
+  3.Application
+  4.User
+
+ 15.内存泄漏：
+    内存泄露：长生命周期的对象持有短生命周期对象的引用
+
+    1.handler
+    2.单例模式
+    3.非静态内部类创建静态实例
+    4.非静态匿名内部类
+    5.没有反注册
+    6.没有关闭资源
+
+ 16.GC:
+     垃圾回收算法：
+     1.标记-清除算法(Mark-Sweep)
+     2.复制算法(Copying)
+     3.标记-整理算法(Mark-Compact)
+     4.分代收集算法(Generational Collection)
+
+     四大引用
+     强引用：
+     软引用：
+     弱引用：
+     虚引用：
+     
+     如何判断对象可回收
+     1.引用计数法
+     2.可达性分析
+
+     典型的垃圾收集器：
+     1.Serial/Serial Old
+     2.ParNew
+     3.Parallel Scavenge
+     4.Parallel Old
+     5.CMS
+     6.G1
+
+     Minar GC：当Eden区满时，触发Minor GC
+     Full GC：收集整个堆，包括新生代，老年代，永久代(在 JDK 1.8 及以后，永久代被移除，换为 metaspace 元空间)等所有部分的模式
+
+     
+17.类文件结构（16个）：
+ ClassFile {
+    u4             magic; //Class 文件的标志
+    u2             minor_version;//Class 的小版本号
+    u2             major_version;//Class 的大版本号
+    u2             constant_pool_count;//常量池的数量
+    cp_info        constant_pool[constant_pool_count-1];//常量池
+    u2             access_flags;//Class 的访问标记
+    u2             this_class;//当前类
+    u2             super_class;//父类
+    u2             interfaces_count;//接口
+    u2             interfaces[interfaces_count];//一个类可以实现多个接口
+    u2             fields_count;//Class 文件的字段属性
+    field_info     fields[fields_count];//一个类可以有多个字段
+    u2             methods_count;//Class 文件的方法数量
+    method_info    methods[methods_count];//一个类可以有个多个方法
+    u2             attributes_count;//此类的属性表中的属性数
+    attribute_info attributes[attributes_count];//属性表集合
+}    
